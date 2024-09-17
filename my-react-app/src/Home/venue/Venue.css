@@ -1,0 +1,16 @@
+.book-venues {
+    padding: 20px;
+  }
+  
+  .venues-container {
+    display: flex;
+    gap: 16px;
+    overflow-x: scroll;
+  }
+  
+  .see-all {
+    text-decoration: none;
+    color: green;
+    font-weight: bold;
+  }
+  
