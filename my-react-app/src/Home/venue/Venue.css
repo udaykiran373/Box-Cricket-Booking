@@ -2,15 +2,31 @@
     padding: 20px;
   }
   
-  .venues-container {
-    display: flex;
-    gap: 16px;
-    overflow-x: scroll;
-  }
-  
+/* Venues container with horizontal scroll and custom scrollbar */
+.venues-container {
+  display: flex;
+  overflow-x: scroll;
+  white-space: nowrap;
+  gap: 10px;
+  padding: 10px;
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: black #e0e0e0; /* Black thumb, light gray track */
+}
+
   .see-all {
     text-decoration: none;
-    color: green;
+    color: #333;
+    font-size: 18px;
     font-weight: bold;
+
+  }
+
+  .heading {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .heading2 {
+    color: #333;
   }
   

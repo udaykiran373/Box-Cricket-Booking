@@ -1,10 +1,9 @@
 .venue-card {
-    width: 250px;
+    min-width: 250px;
     background: white;
     border-radius: 8px;
     box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    position: relative;
   }
   
   .venue-image {
@@ -38,22 +37,5 @@
     margin: 8px 0;
     color: gray;
     font-size: 14px;
-  }
-  
-  .rating {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .rating-score {
-    font-size: 16px;
-    color: green;
-    font-weight: bold;
-  }
-  
-  .rating-count {
-    font-size: 14px;
-    color: gray;
   }
   
