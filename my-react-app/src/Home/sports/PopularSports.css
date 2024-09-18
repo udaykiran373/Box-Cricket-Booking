@@ -19,12 +19,3 @@
     scrollbar-color: black #e0e0e0;
   }
   
-  .sports-card-container::-webkit-scrollbar {
-    height: 8px;
-  }
-  
-  .sports-card-container::-webkit-scrollbar-thumb {
-    background-color: #ccc; /* Customize scrollbar color */
-    border-radius: 4px;
-  }
-  

@@ -4,7 +4,7 @@ import './VenueCard.css';
 const VenueCard = ({ venue }) => {
   return (
     <div className="venue-card">
-      <img src={venue.image} alt={venue.name} className="venue-image" />
+      <a href='#'><img src={venue.image} alt={venue.name} className="venue-image" /></a>
       <div className="venue-details">
         <h3>{venue.name}</h3>
         <p>{venue.address}</p>
