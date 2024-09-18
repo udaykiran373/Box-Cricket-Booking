@@ -10,9 +10,9 @@ const FindPlayers = () => {
       </div>
       <div className="text-section">
         <h1>FIND VENUES NEARBY</h1>
-        <p className='parawidth'>
+        <h4 className='parawidth'>
             Discover local sports venues effortlessly and enjoy your favorite activities in top-notch facilities near you!
-        </p>
+        </h4>
       </div>
       </div>
       <div className="images-section">

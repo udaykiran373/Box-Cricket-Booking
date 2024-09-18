@@ -18,6 +18,7 @@
   }
 
   .parawidth {
+    align-items: start;
     width:160%;
   }
 

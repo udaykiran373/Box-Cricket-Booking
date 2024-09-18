@@ -41,7 +41,9 @@ const BlogSection = () => {
         <h1>Learn Your  Favorite Sport!</h1>
         <a href='#' className='textdecoration'><p>See All</p></a>
         </div>
-        <p>Explore our Leaning posts to gain insights and improve your skills in various sports. Whether you're a beginner or an experienced athlete, you'll find valuable tips and guides to elevate your game.</p>
+        <h4 className='para'>Explore our Leaning posts to gain insights and improve your skills in various sports. 
+            Whether you're a beginner or an experienced athlete, you'll find valuable tips and guides to elevate your game.
+        </h4>
       <div className="blog-container">
         {blogs.map((blog, index) => (
           <BlogCard
