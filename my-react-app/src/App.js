@@ -4,6 +4,8 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Home from './Home/Home'
 import './App.css';
+import ShopLogin from './components/ShopLogin';
+import ShopRegister from './components/ShopRegister';
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path='/shoplogin' element={<ShopLogin />} />
+          <Route path='/shopregister' element={<ShopRegister />} />
           <Route path='/' element={<Home />} />
         </Routes>
       </div>

@@ -7,6 +7,26 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative; /* Important for positioning children like shoplink */
+}
+
+.shoplink {
+    position: absolute;
+    top: 20px;
+    right: 20px; 
+}
+
+.shoplink h1 {
+    font-size: 20px;
+}
+
+.underline {
+    text-decoration: none;
+    color: #333;
+}
+
+.center {
+    text-align: center;
 }
 
 .login-container {
@@ -58,14 +78,14 @@ h2 {
 
 .options a {
     color: #1ce057;
-    opacity:0.8;
+    opacity: 0.8;
     text-decoration: none;
     transition: color 0.3s;
 }
 
 .options a:hover {
     color: #1ce057;
-    opacity:1;
+    opacity: 1;
 }
 
 .login-btn {
@@ -94,7 +114,7 @@ h2 {
 
 .register-link a {
     color: #1ce057;
-    opacity:0.8;
+    opacity: 0.8;
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s;
@@ -102,5 +122,5 @@ h2 {
 
 .register-link a:hover {
     color: #1ce057;
-    opacity:1;
+    opacity: 1;
 }

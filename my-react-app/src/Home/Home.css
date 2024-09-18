@@ -6,6 +6,7 @@
     min-height: 100vh; /* Full viewport height */
     background-color: lightgreen;
     margin-top: 146%;
+    background-position: fixed;
   }
   
   main {

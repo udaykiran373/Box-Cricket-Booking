@@ -5,8 +5,11 @@ import './Form.css';
 function Login() {
     return (
         <div className="background-wrapper">
+            <div className='shoplink'>
+               <a href="/shoplogin" className='underline'><h1>Shop User</h1></a>
+            </div>
             <div className="login-container">
-                <h2>Login</h2>
+                <h2 className='center'>Login</h2>
                 <form>
                     <div className="input-group">
                         <span className="icon"><img src="https://img.icons8.com/ios-filled/20/000000/email-open.png" alt="Email"/></span>
