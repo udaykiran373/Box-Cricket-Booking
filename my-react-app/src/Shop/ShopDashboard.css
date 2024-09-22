@@ -1,0 +1,65 @@
+.sd-shop-dashboard {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.sd-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.sd-email, .sd-owner {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.sd-update-form, .sd-add-ground-form {
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.sd-label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.sd-input, .sd-select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.sd-button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.sd-button:hover {
+    background-color: #0056b3;
+}
+
+.sd-day-container {
+    margin-bottom: 20px;
+}
+
+.sd-existing-grounds-title {
+    margin-top: 30px;
+    font-size: 1.5rem;
+}
+
+.sd-existing-grounds-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sd-ground-item {
+    margin: 5px 0;
+}

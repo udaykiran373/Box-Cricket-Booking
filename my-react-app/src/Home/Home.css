@@ -5,12 +5,10 @@
     width: 100vw;
     min-height: 100vh; /* Full viewport height */
     background-color: lightgreen;
-    margin-top: 146%;
     background-position: fixed;
   }
   
   main {
-    flex-grow: 1; /* This will push the footer to the bottom */
     padding: 20px;
   }
   
