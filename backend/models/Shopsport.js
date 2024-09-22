@@ -14,7 +14,7 @@ const shopsportSchema = new mongoose.Schema({
         default: 0 
     },
     maxplayers: {
-        type: Number, // Array to accommodate different configurations, e.g., [1, 2, 4]
+        type: [Number], // Array to accommodate different configurations, e.g., [1, 2, 4]
         default: [0]
     },
     image: {

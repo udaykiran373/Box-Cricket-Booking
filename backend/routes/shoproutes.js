@@ -7,7 +7,8 @@ const storage = multer.diskStorage({
         cb(null, 'public/images'); // Directory where images will be stored
     },
     filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`);
+        const fileExtension = file.originalname.split('.').pop();
+        cb(null, `${req.session.shop._id}${req.body.groundname}.${fileExtension}`);
     }
 });
 

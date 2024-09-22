@@ -148,7 +148,7 @@ exports.addground = async (req, res) => {
         }
 
         // Construct the image path if image exists
-        const imagePath = image ? `/public/images/${shopId}_${groundname}.${fileExtension}` : null;
+        const imagePath = `/public/images/${shopId}${groundname}.${fileExtension}` ;
 
         // Create a new ground object
         const newGround = {

@@ -70,12 +70,26 @@ const updatesubmit = async (e) => {
 
 
   // Handle change for the days per week input
-  const handleDaysPerWeekChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    setDaysPerWeek(value);
-    setDaysArray(Array(value).fill(''));
-    setTimesArray(Array(value).fill({ start: '', end: '' }));
-  };
+// Handle change for the days per week input
+// Handle change for the days per week input
+const handleDaysPerWeekChange = (e) => {
+  let value = parseInt(e.target.value, 10);
+  
+  // Check if value is NaN or less than 0, set to 0
+  if (isNaN(value) || value < 0) {
+      value = 0;
+  }
+  
+  // Ensure value does not exceed 7
+  if (value > 7) {
+      value = 7;
+  }
+
+  setDaysPerWeek(value);
+  setDaysArray(Array(value).fill(''));
+  setTimesArray(Array(value).fill({ start: '', end: '' }));
+};
+
 
   // Handle change for each day selection
   const handleDayChange = (index, value) => {
