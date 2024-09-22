@@ -10,6 +10,7 @@ const CardList = () => {
       date: 'Sep 20, 2024',
       category: 'Football, Game Rules, Field',
       description: 'Football enthusiasts know the thrill of a 90-minute game, but have you ever thought about the exact dimensions of a football field? Let’s dive into the layout of the field that drives the world’s most popular sport...',
+      link: '/Learnfootball' 
     },
     {
       image: 'CricketRule.jpg', 
@@ -17,6 +18,7 @@ const CardList = () => {
       date: 'Sep 19, 2024',
       category: 'Cricket, Game Rules, Pitch',
       description: 'Cricket fans here! Please tell me who is not! But have you ever noticed what players measure on the pitch? While bowling, they count certain steps; while batting, they inspect the pitch...',
+      link: '/Learncricket'
     },
     {
       image: 'BasketballRule.jpg', 
@@ -71,18 +73,19 @@ const CardList = () => {
 
   return (
     <div>
-      <div className="card-list">
-        {cardsData.slice(0, visibleCards).map((card, index) => (
-          <Card
-            key={index}
-            image={card.image}
-            title={card.title}
-            date={card.date}
-            category={card.category}
-            description={card.description}
-          />
-        ))}
-      </div>
+    <div className="card-list">
+      {cardsData.slice(0, visibleCards).map((card, index) => (
+    <Card
+      key={index}
+      image={card.image}
+      title={card.title}
+      date={card.date}
+      category={card.category}
+      description={card.description}
+      link={card.link}  // pass the link to the Card
+      />
+    ))}
+    </div>
       {visibleCards < cardsData.length && (
         <button className="read-more" onClick={handleReadMore}>
           Read More

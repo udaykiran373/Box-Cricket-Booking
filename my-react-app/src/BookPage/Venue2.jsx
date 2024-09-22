@@ -3,6 +3,7 @@ import VenueCard2 from './VenueCard2';
 import './Venue2.css';
 import Header from '../Home/partials/Header';
 import SearchSection from '../Home/partials/SearchSection';
+import Loader2 from './Loader2';
 
 function Venue2() {
   const [venues, setVenues] = useState([]);
@@ -51,7 +52,7 @@ function Venue2() {
   }, []);
 
   if (loading) {
-    return <div>Loading venues...</div>; // Display loading message while fetching
+    return <Loader2 />;  // Show loader when data is being fetched
   }
 
   return (

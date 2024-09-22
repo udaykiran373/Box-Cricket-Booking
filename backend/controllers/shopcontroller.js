@@ -65,16 +65,41 @@ exports.loginshop = async (req, res) => {
         res.status(500).json({ msg: 'Server error' });
     }
 };
+
+
 exports.checkshopsession = (req, res) => {
     console.log('Session object:', req.session); // Debugging session object
+
     if (req.session.shop) {
         console.log('Session exists');
-        res.status(200).json({ msg: 'Shop Session exist ',shop:req.session.shop });
+
+        const shop = req.session.shop;
+
+        if (shop.availablesports && shop.availablesports.length > 0) {
+            shop.availablesports = shop.availablesports.map((sport) => {
+                try {
+                    const filepath = path.join(__dirname, '..', sport.image);
+                    const imageBuffer = fs.readFileSync(filepath);
+                    // Convert the image to a base64 string with MIME type
+                    sport.getimage = `data:image/jpeg;base64,${imageBuffer.toString('base64')}`;
+                } catch (imageError) {
+                    console.error(`Error reading image for ${sport.groundname}:`, imageError);
+                    sport.getimage = ''; // Push an empty string if image not found
+                }
+                return sport;
+            });
+        } else {
+            console.log('No available sports found for this shop.');
+        }
+
+        res.status(200).json({ msg: 'Shop session exists', shop: req.session.shop });
     } else {
         console.log('No session found');
         res.status(400).json({ msg: "Session does not exist" });
     }
 };
+
+
 exports.updateshop = async (req, res) => {
     if (!req.session.shop) {
         return res.status(401).json({ msg: 'No shop logged in' });
@@ -171,6 +196,7 @@ exports.addground = async (req, res) => {
         // Push the new ground to the shop's availablesports array
         shop.availablesports.push(newGround);
         await shop.save();
+        req.session.shop=shop;
 
         res.status(201).json({ msg: 'Ground added successfully!', shop });
     } catch (error) {

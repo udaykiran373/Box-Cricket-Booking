@@ -10,6 +10,8 @@ import ShopDashboard from './Shop/ShopDashboard';
 import Venue2 from './BookPage/Venue2';
 import ArticleCard from './Learncard/ArticleCard';
 import BookingPage from './Home/Booking/BookingPage';
+import Slide from './LearnVolleyBall/Slide';
+import CricketSlide from './LearnCricket/CricketSlide';
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path='/Learn' element={<ArticleCard />} />
           <Route path='/Book' element={<Venue2 />} />
           <Route path='/' element={<Home />} />
+          <Route path='/Learnfootball' element={<Slide />} />
+          <Route path='/Learncricket' element={<CricketSlide />} />
           <Route path="/Booking/:name" element={<BookingPage />} />
         </Routes>
       </div>

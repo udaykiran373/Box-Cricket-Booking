@@ -11,6 +11,7 @@ const BlogSection = () => {
       description: 'The most simplified Volleyball manual...',
       date: 'SEPTEMBER 26, 2018',
       author: 'PLAYO'
+      
     },
     {
       image: 'CricketRule.jpg',
