@@ -30,9 +30,13 @@ function Login() {
                 body: JSON.stringify({ email, password }),
                 credentials: 'include' // This ensures cookies are sent with the request
             });
-
+            const data=await res.json();
             if (res.ok) {
+                if(data.role==="user"){
                 navigate('/'); // Redirect to homepage after successful login
+                }else if(data.role==="admin"){
+                    navigate('/admindashboard'); 
+                }
             } else {
                 setErrorMessage("Invalid email or password");
             }

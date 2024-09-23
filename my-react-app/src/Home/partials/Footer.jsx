@@ -12,7 +12,7 @@ const Footer = () => {
           <div className="footer-section">
             <h3 className="heading">Company</h3>
             <ul>
-              <li><a href="#">About Us</a></li>
+              <li><a href="/AboutUs">About Us</a></li>
               <li><a href="#">Contact</a></li>
             </ul>
           </div>
@@ -27,10 +27,10 @@ const Footer = () => {
           <div className="footer-section">
             <h3 className="heading">Privacy & Terms</h3>
             <ul>
-              <li><a href="#">FAQs</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Terms of Service</a></li>
-              <li><a href="#">Cancellation Policy</a></li>
+              <li><a href="/faqs">FAQs</a></li>
+              <li><a href="/privacypolicy">Privacy Policy</a></li>
+              <li><a href="/termsofservice">Terms of Service</a></li>
+              <li><a href="/cancellationpolicy">Cancellation Policy</a></li>
             </ul>
           </div>
         </div>

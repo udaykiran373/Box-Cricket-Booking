@@ -39,7 +39,7 @@ exports.login = async (req, res) => {
 
         // Set the session cookie (remove secure: true for development)
         res.cookie('sessionId', req.session.id, { httpOnly: true, secure: false, sameSite: 'None' });
-        res.status(200).json({ msg: 'Login Successful' });
+        res.status(200).json({ msg: 'Login Successful',role:userfound.role });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ msg: 'Server error' });

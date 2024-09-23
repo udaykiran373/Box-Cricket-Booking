@@ -60,7 +60,7 @@ function Venue() {
       <div className="book-venues">
         <div className="heading">
           <h2 className="heading2">Book Venues</h2>
-          <a href="#" className="see-all">SEE ALL VENUES</a>
+          <a href="/Book" className="see-all">SEE ALL VENUES</a>
         </div>
         <div className="venues-container">
           {venues.slice(0, 6).map((venue, index) => (

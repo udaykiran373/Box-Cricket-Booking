@@ -42,7 +42,7 @@ const Header = () => {
                 <div className="logo">
                     <a href="/"><span className="highlight">B</span>ox<span className="highlight">P</span>lay</a>
                 </div>
-                <ul className="nav-links">
+                <ul className="nav-links1">
                     <li><a href="#">Play</a></li>
                     <li><a href="/Book">Book</a></li>
                     <li><a href="/Learn">Learn</a></li>

@@ -10,7 +10,7 @@
     justify-content: flex-start;
   }
   
-  .app-header {
+  .app-header1 {
     background-color: #333;
     color: white;
     padding: 20px;
@@ -19,6 +19,10 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     font-size: 1rem;
     font-weight: bold;
+  }
+
+  .app-header1 h1 {
+    color: white;
   }
   
   .app-main {
@@ -40,5 +44,9 @@
     position: fixed;
     bottom: 0;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .app-footer p {
+    color: white;
   }
   

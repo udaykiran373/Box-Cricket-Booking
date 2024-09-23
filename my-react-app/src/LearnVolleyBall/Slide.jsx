@@ -8,7 +8,7 @@ import './Slide.css';
 function Slide() {
   return (
     <div className="app-container">
-      <header className="app-header">
+      <header className="app-header1">
         <h1>The Basics of Volleyball</h1>
       </header>
       <main className="app-main">

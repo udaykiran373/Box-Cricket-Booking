@@ -41,4 +41,9 @@
     color: #999;
     margin-top: 10px;
   }
+
+  .learn-link {
+    text-decoration: none;
+    color: inherit; /* Ensure the link uses the default text color */
+  }
   

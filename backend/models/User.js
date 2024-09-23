@@ -18,7 +18,14 @@ const userSchema = new mongoose.Schema({
     bookings: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Booking' // Reference to the Booking schema
-    }]
+    }],
+    role:{
+        type:String,
+        enum: ['admin', 'user'],
+        default: 'user'
+    },contact:{
+        type:String
+    }
 });
 
 module.exports = mongoose.model('User', userSchema);

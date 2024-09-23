@@ -3,6 +3,7 @@ const cors = require('cors');
 const dbconnect = require('./config/db');
 const userroutes = require('./routes/userroutes');
 const shoproutes=require('./routes/shoproutes');
+const adminroutes=require('./routes/adminroutes');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser'); 
@@ -34,6 +35,7 @@ app.use(session({
 }));
 app.use('/user', userroutes);
 app.use('/shop', shoproutes);
+app.use('/admin', adminroutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

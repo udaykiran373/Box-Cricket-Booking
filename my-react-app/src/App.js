@@ -12,6 +12,12 @@ import ArticleCard from './Learncard/ArticleCard';
 import BookingPage from './Home/Booking/BookingPage';
 import Slide from './LearnVolleyBall/Slide';
 import CricketSlide from './LearnCricket/CricketSlide';
+import AboutUs from './Footer/AboutUs';
+import FAQ from './Footer/Faq';
+import PrivacyPolicy from './Footer/PrivacyPolicy';
+import TermsOfService from './Footer/TermsofService';
+import CancellationPolicy from './Footer/CancellationPolicy';
+import AdminDashboard from './Admin/AdminDashboard';
 
 function App() {
   return (
@@ -29,6 +35,12 @@ function App() {
           <Route path='/Learnfootball' element={<Slide />} />
           <Route path='/Learncricket' element={<CricketSlide />} />
           <Route path="/Booking/:name" element={<BookingPage />} />
+          <Route path='/AboutUs' element={<AboutUs />} />
+          <Route path='/faqs' element={<FAQ />} />
+          <Route path='/privacypolicy' element={<PrivacyPolicy />} />
+          <Route path='/termsofservice' element={<TermsOfService />} />
+          <Route path='/cancellationpolicy' element={<CancellationPolicy />} />
+          <Route path="/admindashboard" element={<AdminDashboard />} />
         </Routes>
       </div>
     </Router>
