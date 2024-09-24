@@ -27,11 +27,7 @@ const shopSchema = new mongoose.Schema({
     contact:{
         type:String
     },
-    availablesports: [shopsportSchema],
-    verify: { 
-        type: Boolean,
-        default: false
-    }
+    availablesports: [shopsportSchema]
 });
 
 module.exports = mongoose.model('Shop', shopSchema);
