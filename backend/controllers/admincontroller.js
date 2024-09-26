@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../models/User');
 const Shop = require('../models/Shop');
+const Booking=require('../models/Booking');
 
 const displaydetails = async () => {
     let users = [];
@@ -19,11 +20,13 @@ exports.checksession = async (req, res) => {
     if (req.session.user && req.session.user.role === "admin") {
         try {
             // Call displaydetails directly
+            const admin=await User.findById(req.session.user._id);
             const details = await displaydetails();
             res.status(200).json({
                 message: "Session Exists",
                 username:req.session.user.username,
-                details // Include the details in the response
+                details,
+                admin // Include the details in the response
             });
         } catch (err) {
             console.error(err);
@@ -100,5 +103,89 @@ exports.admindeleteuser=async (req,res)=>{
 
 
 
+exports.fixpercentage=async (req,res)=>{
+    const {percentage}=req.body;
+    try{
+        const adminid=req.session.user._id;
+        const admin=await User.findById(adminid);
+        admin.revenuepercentage=percentage;
+        await admin.save();
+        console.log('hi');
+        res.status(200).json({message:'Percentage updated successfully'});
+        }
+        catch(error){
+            console.log(error);
+        }
 
+}
+exports.getpercentage = async (req, res) => {
+    try {
+        // Define the role first
+        const role = 'admin'; // Assuming 'admin' is the role you want to query
+        
+        // Now, fetch the admin user based on the role
+        const admin = await User.findOne({ role: role });
 
+        if (admin) {
+            // Respond with the revenue percentage
+            res.status(200).json({ percentage: admin.revenuepercentage });
+            console.log(admin.revenuepercentage)
+        } else {
+            // Handle case where admin is not found
+            res.status(404).json({ message: 'Admin not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+exports.checkRevenue = async (req, res) => {
+    try {
+        console.log("checkRevenue function called"); // Debug log
+        
+        // Step 1: Fetch all bookings
+        const bookings = await Booking.find();
+        // Step 2: Fetch all shops and create a mapping
+        const shops = await Shop.find(); // Fetch all shops
+        const shopMap = {};
+        shops.forEach(shop => {
+            shopMap[shop._id] = shop.shopname; // Map shop ID to shop name
+        });
+
+        const revenueMap = {};
+        let totalRevenue = 0;
+
+        bookings.forEach((booking) => {
+            const shopId = booking.shop; // Directly get the shop ID
+            const platformFee = booking.platformfee || 0;
+            totalRevenue += platformFee;
+
+            if (shopId) {
+                if (revenueMap[shopId]) {
+                    revenueMap[shopId].platformFee += platformFee;
+                } else {
+                    revenueMap[shopId] = {
+                        shopName: shopMap[shopId] || "Unknown Shop", // Use the shopMap to get the shop name
+                        platformFee: platformFee
+                    };
+                }
+            }
+        });
+
+        console.log("Revenue Map:", revenueMap); // Log the revenue map
+
+        const shopRevenues = Object.keys(revenueMap).map((shopId) => ({
+            shopId: shopId,
+            shopName: revenueMap[shopId].shopName,
+            platformFee: revenueMap[shopId].platformFee
+        }));
+
+        res.json({
+            totalRevenue: totalRevenue,
+            shopRevenues: shopRevenues
+        });
+    } catch (error) {
+        console.error("Error fetching revenue data:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};

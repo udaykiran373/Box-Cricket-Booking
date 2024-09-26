@@ -1,0 +1,53 @@
+import React, { useEffect, useState } from 'react';
+import './TodaysBookings.css'
+import Header from '../partials/Header';
+
+const TodayBooking = () => {
+    const [bookings, setBookings] = useState([]);
+
+    useEffect(() => {
+        const fetchBookings = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/shop/todaybookings',{
+                    method: 'GET',
+                    credentials:'include'
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    setBookings(data);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchBookings();
+    }, []);
+
+    return (
+        <div className="tb-container">
+            <Header />
+            <h1 className="tb-title">Today's Bookings</h1>
+            <div className="tb-bookings">
+                {bookings.map((booking) => (
+                    <div className="tb-booking-card" key={booking._id}>
+                        <h2 className="tb-ground-name">{booking.groundname}</h2>
+                        <p className="tb-date">Date: {new Date(booking.date).toLocaleDateString()}</p>
+                        <p className="tb-time-slot">
+                            Time Slot: {booking.timeSlot.start} - {booking.timeSlot.end}
+                        </p>
+                        <p className="tb-amount-paid">Amount Paid: ${booking.amountPaid}</p>
+                        <p className="tb-status">Status: {booking.status}</p>
+                        {booking.feedback && (
+                            <div className="tb-feedback">
+                                <p className="tb-rating">Rating: {booking.feedback.rating}</p>
+                                <p className="tb-comment">Comment: {booking.feedback.comment}</p>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default TodayBooking;

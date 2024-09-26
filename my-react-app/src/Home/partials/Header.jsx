@@ -1,40 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Header.css';
 
 const Header = () => {
     const [username, setUsername] = useState(null);
-    const navigate=useNavigate();
+    const navigate = useNavigate();
+    const hasCheckedSessions = useRef(false); // Ref to track if sessions have been checked
 
     useEffect(() => {
-        const checkSession = async () => {
-            const response = await fetch('http://localhost:5000/user/checksession', {
-                credentials: 'include' // Send cookies with the request
-            });   
+        const checkSessions = async () => {
+            if (hasCheckedSessions.current) return; // Skip if already checked
 
-            if (response.ok) {
-                const data = await response.json();
-                setUsername(data.username); // Set the username if session is valid
-            } else {
-                setUsername(null); // Clear username if session is not valid
+            hasCheckedSessions.current = true; // Mark as checked
+
+            try {
+                // Check user session
+                const userResponse = await fetch('http://localhost:5000/user/checksession', {
+                    credentials: 'include'
+                });
+
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    setUsername(userData.username);
+                } else {
+                    setUsername(null);
+                }
+
+                // Check shop session
+                const shopResponse = await fetch('http://localhost:5000/shop/checkshopsession', {
+                    credentials: 'include'
+                });
+
+                if (shopResponse.ok) {
+                    navigate('/shopdashboard');
+                }
+            } catch (error) {
+                console.error('Error checking sessions:', error);
             }
         };
 
-        checkSession();
-    }, []); 
-    useEffect(() => {
-      const checkshopsession = async () => {
-          const response = await fetch('http://localhost:5000/shop/checkshopsession', {
-              credentials: 'include' // Send cookies with the request
-          });
-
-          if (response.ok) {
-            navigate('/shopdashboard')  ;
-          } 
-      };
-
-      checkshopsession();
-  }, []);
+        checkSessions();
+    }, [navigate]); // Add 'navigate' to the dependency array
 
     return (
         <header>
@@ -43,7 +49,7 @@ const Header = () => {
                     <a href="/"><span className="highlight">B</span>ox<span className="highlight">P</span>lay</a>
                 </div>
                 <ul className="nav-links1">
-                    <li><a href="#">Play</a></li>
+                    <li><a href="/play">Play</a></li>
                     <li><a href="/Book">Book</a></li>
                     <li><a href="/Learn">Learn</a></li>
                     <li><a href="#">News</a></li>

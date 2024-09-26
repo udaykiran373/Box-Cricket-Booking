@@ -1,4 +1,3 @@
-// models/User.js
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -9,8 +8,14 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true, 
+        unique: true,
     },
+    otp: {
+        type: String
+    },
+    otpExpiration: {
+        type: String
+    },
     password: {
         type: String,
         required: true,
@@ -19,13 +24,24 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Booking' // Reference to the Booking schema
     }],
-    role:{
-        type:String,
+    role: {
+        type: String,
         enum: ['admin', 'user'],
         default: 'user'
-    },contact:{
-        type:String
+    },
+    contact: {
+        type: String
+    },
+    revenuepercentage: {
+        type: Number,
+        default: 0 // Only meaningful for 'admin'
+    },
+    totalrevenue:{
+        type:Number,
+        default:0
     }
 });
+
+
 
 module.exports = mongoose.model('User', userSchema);

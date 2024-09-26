@@ -163,17 +163,16 @@ exports.addground = async (req, res) => {
         if (image) {
             // Map mimetype to file extension
             const mimeToExt = {
-                'image/jpeg': 'jpg',
+                'image/jpeg': 'jpeg',
+                'image/jpg': 'jpg',
                 'image/png': 'png',
                 'image/gif': 'gif',
                 'image/webp': 'webp'
             };
 
-            fileExtension = mimeToExt[image.mimetype] || ''; // Default to empty if unknown mimetype
+            fileExtension = mimeToExt[image.mimetype] || '';
         }
-
-        // Construct the image path if image exists
-        const imagePath = `/public/images/${shopId}${groundname}.${fileExtension}` ;
+        const imagePath = `public/images/${shopId}-${groundname}.${fileExtension}`; // Fixed file path format
 
         // Create a new ground object
         const newGround = {
@@ -196,7 +195,22 @@ exports.addground = async (req, res) => {
         // Push the new ground to the shop's availablesports array
         shop.availablesports.push(newGround);
         await shop.save();
-        req.session.shop=shop;
+        shop.availablesports = shop.availablesports.map((sport) => {
+            try {
+                const filepath = path.join(__dirname, '..', sport.image);
+                if (fs.existsSync(filepath)) {
+                    const imageBuffer = fs.readFileSync(filepath);
+                    sport.getimage = `data:image/jpeg;base64,${imageBuffer.toString('base64')}`;
+                } else {
+                    sport.getimage = ''; // If image doesn't exist, use an empty string
+                }
+            } catch (imageError) {
+                console.error(`Error reading image for ${sport.groundname}:`, imageError);
+                sport.getimage = ''; // If any error occurs, set the image to an empty string
+            }
+            return sport;
+        });
+        req.session.shop = shop;
 
         res.status(201).json({ msg: 'Ground added successfully!', shop });
     } catch (error) {
@@ -204,8 +218,33 @@ exports.addground = async (req, res) => {
         res.status(500).json({ msg: 'Server error' });
     }
 };
+exports.applyforverification = async (req, res) => {
+    try {
+      const { groundname } = req.body;
+  
+      // Find the ground in the shop's available sports and mark it as applied for verification
+      const shopid = req.session.shop;
+      const shop=await Shop.findById(shopid);
+      const ground = shop.availablesports.find(g => g.groundname === groundname);
+      
+      if (ground) {
+        ground.appliedforverification = true;
+        await shop.save(); // Save changes to the database
+        
+        // Update session data with the new shop object
+        req.session.shop = shop;
 
-
+  
+        return res.status(200).json({ message: 'Verification applied successfully' });
+      } else {
+        return res.status(404).json({ message: 'Ground not found' });
+      }
+    } catch (error) {
+      console.error('Error applying for verification:', error);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+  
  // Adjust the path to your Shop model
 
 exports.loadVenues = async (req, res) => {
@@ -262,135 +301,125 @@ exports.loadVenues = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+
 exports.loadGround = async (req, res) => {
     try {
-      const { name } = req.body;
-      const shopname=name.slice()
-      // Find the ground(s) that match the venue name
-      const grounds = await ShopSport.find({ groundname: name })
-        .populate('sport') // Populate to get details of the sport
-        .exec();
-  
-      if (!grounds || grounds.length === 0) {
-        return res.status(404).json({ message: 'No grounds found for the specified venue.' });
-      }
-  
-      res.status(200).json(grounds);
+        const { name } = req.body;
+        const shopname = name.split('_')[0].replace(/-/g, ' ');
+        const groundname = name.split('_')[1];
+        
+        const shop = await Shop.findOne({ shopname });
+        if (!shop) {
+            return res.status(404).json({ message: 'Shop not found.' });
+        }
+
+        const groundIndex = shop.availablesports.findIndex(sport => sport.groundname === groundname);
+        if (groundIndex === -1) {
+            return res.status(404).json({ message: 'Ground not found in this shop.' });
+        }
+
+        const ground = shop.availablesports[groundIndex];
+        const imagePath = path.join(__dirname, '..', ground.image);
+
+        // Check if the image path exists and convert to Base64
+        if (ground.image) {
+            // Read the image file and convert to base64
+            try {
+                const imageBuffer = fs.readFileSync(imagePath);
+                const imageBase64 = imageBuffer.toString('base64');
+                const imageType = path.extname(ground.image).substring(1); // Get the image type
+                ground.image = `data:image/${imageType};base64,${imageBase64}`;
+            } catch (imageError) {
+                console.error(`Error reading image for ${ground.groundname}:`, imageError);
+                ground.image = null; // Set image to null if error occurs
+            }
+        }
+        const address=shop.address;
+
+        res.status(200).json({ground,address});
     } catch (error) {
-      console.error('Error loading ground:', error);
-      res.status(500).json({ message: 'An error occurred while loading the ground.' });
+        console.error('Error loading ground:', error);
+        res.status(500).json({ message: 'An error occurred while loading the ground.' });
+    }
+};
+exports.checkgroundifthatdate = async (req, res) => {
+    try {
+      const { selectedDate, shopname, groundname } = req.body;
+      console.log('hi');
+      // Find the shop by name
+      const shop = await Shop.findOne({ shopname });
+      if (!shop) {
+        return res.status(404).json({ message: 'Shop not found' });
+      }
+      
+      // Check if the ground is booked on the selected date
+      const bookedground = await Booking.find({
+        shop: shop._id,
+        date: selectedDate, // Ensure the date format is the same on both sides
+        groundname: groundname,
+      });
+  
+      if (bookedground) {
+        return res.status(200).json({ message: 'Ground is already booked on this date.', bookedground });
+      } else {
+        return res.status(200).json({ message: 'No Ground Booked on this date.' });
+      }
+    } catch (err) {
+      console.error('Error in checkgroundifthatdate:', err);
+      res.status(500).json({ message: 'Server error occurred while checking the booking status.' });
     }
   };
-
-
-// Create a new booking
-exports.createBooking = async (req, res) => {
+exports.bookground = async (req, res) => {
+    const {  shopname, groundname, date, timeSlot,groundfee,platformfee, amountPaid } = req.body;
+    console.log(shopname+ groundname+ date+ timeSlot+ amountPaid )
+    // Validation
+    if ( !shopname || !groundname || !date || !timeSlot || !amountPaid) {
+        return res.status(400).json({ message: 'All fields are required.' });
+    }
+    
+    
     try {
-        const { shop,date, timeSlot, amountPaid } = req.body;
         const user=req.session.user;
-
-        // Create a new booking object
-        const newBooking = new Booking({
-            user,
-            shop,
-            sport,
-            date,
-            timeSlot,
-            amountPaid
-        });
-
-        // Save booking to database
+    const shop=await Shop.findOne({shopname:shopname});
+    // Create a new booking record
+    const newBooking = new Booking({
+        user,
+        shop,
+        groundname,
+        date: new Date(date),
+        timeSlot,
+        amountPaid,
+        groundfee,
+          platformfee,
+          amountPaid,
+        status: 'Confirmed', // Default status
+    });
+        // Save the new booking to the database
         await newBooking.save();
-        res.status(201).json({ message: 'Booking created successfully!', booking: newBooking });
+        return res.status(201).json({ message: 'Booking confirmed!', booking: newBooking });
     } catch (error) {
-        res.status(500).json({ message: 'Error creating booking', error: error.message });
+        return res.status(500).json({ message: 'An error occurred while saving the booking.', error });
     }
 };
+exports.todaybookings = async (req, res) => {
+    const today = new Date();
+    const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const endOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+    console.log(today);
 
-// Fetch all bookings
-exports.getAllBookings = async (req, res) => {
     try {
-        const bookings = await Booking.find()
-            .populate('user', 'username email') // Populate user details
-            .populate('shop', 'shopname address') // Populate shop details
-            .populate('sport', 'groundname'); // Populate sport details
+        const bookings = await Booking.find({
+            date: {
+                $gte: startOfToday,
+                $lt: endOfToday
+            }
+        }).populate('user', 'name') // Adjust as needed
+          .populate('shop', 'name'); // Adjust as needed
+
         res.status(200).json(bookings);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching bookings', error: error.message });
+        res.status(500).json({ message: 'Error fetching bookings', error });
     }
 };
-
-// Fetch bookings by user
-exports.getBookingsByUser = async (req, res) => {
-    try {
-        const { userId } = req.params;
-        const bookings = await Booking.find({ user: userId })
-            .populate('shop', 'shopname address')
-            .populate('sport', 'groundname');
-        res.status(200).json(bookings);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching bookings for user', error: error.message });
-    }
-};
-
-// Update a booking
-exports.updateBooking = async (req, res) => {
-    try {
-        const { bookingId } = req.params;
-        const updates = req.body;
-        const updatedBooking = await Booking.findByIdAndUpdate(bookingId, updates, { new: true });
-
-        if (!updatedBooking) {
-            return res.status(404).json({ message: 'Booking not found' });
-        }
-
-        res.status(200).json({ message: 'Booking updated successfully', booking: updatedBooking });
-    } catch (error) {
-        res.status(500).json({ message: 'Error updating booking', error: error.message });
-    }
-};
-
-// Cancel a booking
-exports.cancelBooking = async (req, res) => {
-    try {
-        const { bookingId } = req.params;
-        const { cancellationReason } = req.body;
-
-        const cancelledBooking = await Booking.findByIdAndUpdate(
-            bookingId,
-            { status: 'Cancelled', cancellationReason, cancellationDate: new Date() },
-            { new: true }
-        );
-
-        if (!cancelledBooking) {
-            return res.status(404).json({ message: 'Booking not found' });
-        }
-
-        res.status(200).json({ message: 'Booking cancelled successfully', booking: cancelledBooking });
-    } catch (error) {
-        res.status(500).json({ message: 'Error cancelling booking', error: error.message });
-    }
-};
-
-// Add feedback for a booking
-exports.addFeedback = async (req, res) => {
-    try {
-        const { bookingId } = req.params;
-        const { rating, comment } = req.body;
-
-        const booking = await Booking.findByIdAndUpdate(
-            bookingId,
-            { feedback: { rating, comment, feedbackDate: new Date() } },
-            { new: true }
-        );
-
-        if (!booking) {
-            return res.status(404).json({ message: 'Booking not found' });
-        }
-
-        res.status(200).json({ message: 'Feedback added successfully', booking });
-    } catch (error) {
-        res.status(500).json({ message: 'Error adding feedback', error: error.message });
-    }
-};
-
+  

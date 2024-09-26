@@ -4,30 +4,32 @@ const mongoose = require('mongoose');
 const bookingSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Reference to the User model
-        required: true
+        ref: 'User'
     },
     shop: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Shop', // Reference to the Shop model
-        required: true
+        ref: 'Shop'
     },
-    sport: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Shopsport', // Reference to the Shopsport model
-        required: true
+    groundname:{
+     type:String,
     },
     date: {
         type: Date,
         required: true
     },
+    platformfee:{
+     type:Number
+    },
+    groundfee:{
+     type:Number
+    },
     timeSlot: {
         start: {
-            type: String, // E.g., '08:00 AM'
+            type: String, 
             required: true
         },
         end: {
-            type: String, // E.g., '10:00 AM'
+            type: String, 
             required: true
         }
     },
@@ -44,30 +46,30 @@ const bookingSchema = new mongoose.Schema({
         type: Date
     },
     transactionId: {
-        type: String // Store transaction ID for reference
+        type: String 
     },
     cancellationReason: {
-        type: String, // Reason for cancellation, if applicable
+        type: String,
     },
     cancellationDate: {
-        type: Date // Date of cancellation
+        type: Date 
     },
     refundAmount: {
         type: Number, 
     },checkInTime: {
-        type: Date // Time the user checked in
+        type: Date 
     },
     checkOutTime: {
-        type: Date // Time the user checked out
+        type: Date 
     },
     feedback: {
         rating: {
-            type: Number, // E.g., 1 to 5 stars
+            type: Number, 
             min: 1,
             max: 5
         },
         comment: {
-            type: String // User's feedback about the venue or service
+            type: String 
         },
         feedbackDate: {
             type: Date,

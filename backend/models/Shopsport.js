@@ -32,7 +32,7 @@ const shopsportSchema = new mongoose.Schema({
         },
         times: [{
             start: { type: String, required: true },  // E.g., '08:00 AM'
-            end: { type: String, required: true }     // E.g., '10:00 PM'
+            end: { type: String, required: true } ,    // E.g., '10:00 PM'
         }]
     }],
     facilities: [{

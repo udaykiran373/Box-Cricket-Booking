@@ -17,7 +17,15 @@ import FAQ from './Footer/Faq';
 import PrivacyPolicy from './Footer/PrivacyPolicy';
 import TermsOfService from './Footer/TermsofService';
 import CancellationPolicy from './Footer/CancellationPolicy';
-import AdminDashboard from './Admin/AdminDashboard';
+import Dashboard from './Admin/Dashboard';
+import UserMode from './Admin/UserMode';
+import VerifyShopMode from './Admin/VerifyShopMode';
+import ShopMode from './Admin/ShopMode';
+import TodayBooking from './Home/play/TodaysBookings';
+import Forgotpassword from './components/Forgotpassword';
+import Loginwithotp from './components/Loginwithotp';
+import Updateotp from './components/Updateotp';
+import Revenuecheck from './Admin/Revenuecheck';
 
 function App() {
   return (
@@ -31,6 +39,7 @@ function App() {
           <Route path='/shopdashboard' element={<ShopDashboard />} />
           <Route path='/Learn' element={<ArticleCard />} />
           <Route path='/Book' element={<Venue2 />} />
+          <Route path='/play' element={<TodayBooking />} />
           <Route path='/' element={<Home />} />
           <Route path='/Learnfootball' element={<Slide />} />
           <Route path='/Learncricket' element={<CricketSlide />} />
@@ -40,7 +49,15 @@ function App() {
           <Route path='/privacypolicy' element={<PrivacyPolicy />} />
           <Route path='/termsofservice' element={<TermsOfService />} />
           <Route path='/cancellationpolicy' element={<CancellationPolicy />} />
-          <Route path="/admindashboard" element={<AdminDashboard />} />
+          <Route path='/forgotpassword' element={<Forgotpassword />} />
+          <Route path='/loginwithotp' element={<Loginwithotp />} />
+          <Route path='/updatewithotp' element={<Updateotp />} />
+          <Route path='/admindashboard' element={<Dashboard />} >
+                 <Route path='ManageUsers' element={<UserMode />}/>
+                 <Route path='VerifyUsers' element={<VerifyShopMode />}/>
+                 <Route path='ManageShops' element={<ShopMode />}/>
+                 <Route path='Revenuecheck' element={<Revenuecheck />}/>
+         </Route>
         </Routes>
       </div>
     </Router>

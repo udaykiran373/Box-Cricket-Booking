@@ -63,7 +63,7 @@ const ShopDashboard = () => {
         const data = await response.json();
         setState(data.updatedShop);
         alert('Shop details updated successfully');
-        navigate('/shopdashboard');
+        window.location.reload();
       } else {
         const error = await response.json();
         alert(`Update failed: ${error.msg}`);
@@ -150,6 +150,42 @@ const ShopDashboard = () => {
       alert('An error occurred while adding the ground.');
     }
   };
+  const applyingforverification = async (groundname) => {
+    try {
+      const response = await fetch('http://localhost:5000/shop/applyforverification', {
+        method: 'POST',
+        body: JSON.stringify({ groundname }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        alert('Applied Successfully');
+  
+        // Fetch updated data from the server
+        const updatedResponse = await fetch('http://localhost:5000/shop/checkshopsession', {
+          credentials: 'include'
+        });
+  
+        if (updatedResponse.ok) {
+          const updatedData = await updatedResponse.json();
+          setState(updatedData.shop); // Update shop state
+          setGrounds(updatedData.shop.availablesports || []); // Update the grounds list
+          setGroundImages(updatedData.images || []); // Update ground images if necessary
+        }
+  
+      } else {
+        const error = await response.json();
+        alert(`Failed to apply for verification: ${error.msg}`);
+      }
+    } catch (err) {
+      console.log(err);
+      alert('An error occurred while applying for verification.');
+    }
+  };
+  
 
   return (
     <div className="sd-shop-dashboard">
@@ -277,12 +313,16 @@ const ShopDashboard = () => {
             <p>Facilities: {ground.facilities.join(', ')}</p>
             <p>Surface Type: {ground.surfacetype}</p>
             <img
-              src={ground.getimage || 'default-image-path.jpg'} // Fallback to default image if not available
+              src={ground.getimage || ground.image||'default-image-path.jpg'} // Fallback to default image if not available
               alt={ground.groundname}
               className="sd-ground-image"
             />
             <p>Status: {ground.status}</p>
             <p>Verification: {ground.verify ? 'Verified' : 'Not Verified'}</p>
+            <p>Appled For Verification: {ground.appliedforverification ? 'Applied' : 'Not Applied'}</p>
+            {!ground.verify && !ground.appliedforverification &&(
+        <button onClick={() => applyingforverification(ground.groundname)}>Apply for Verification</button>
+      )}
           </li>
         ))}
       </ul>

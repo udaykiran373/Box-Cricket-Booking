@@ -64,7 +64,7 @@ function Venue2() {
           <h2 className="venue-heading2">Book Venues</h2>
         </div>
         <div className="venue-grid2">
-          {venues.slice(0, 6).map((venue, index) => (
+          {venues.map((venue, index) => (
             <VenueCard2 key={index} venue={venue} />
           ))}
         </div>

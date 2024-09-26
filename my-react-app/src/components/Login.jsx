@@ -82,7 +82,7 @@ function Login() {
                         <label>
                             <input type="checkbox" /> Remember me
                         </label>
-                        <a href="#">Forgot password?</a>
+                        <a href="/forgotpassword">Forgot password?</a>
                     </div>
                     <button type="submit" className="login-btn">Login Now</button>
                     {errorMessage && <p className='m2'>{errorMessage}</p>}
