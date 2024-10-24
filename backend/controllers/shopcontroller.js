@@ -172,7 +172,7 @@ exports.addground = async (req, res) => {
 
             fileExtension = mimeToExt[image.mimetype] || '';
         }
-        const imagePath = `public/images/${shopId}-${groundname}.${fileExtension}`; // Fixed file path format
+        const imagePath = `public/images/${shopId}${groundname}.${fileExtension}`; // Fixed file path format
 
         // Create a new ground object
         const newGround = {
@@ -414,8 +414,8 @@ exports.todaybookings = async (req, res) => {
                 $gte: startOfToday,
                 $lt: endOfToday
             }
-        }).populate('user', 'name') // Adjust as needed
-          .populate('shop', 'name'); // Adjust as needed
+        }).populate('user') // Adjust as needed
+          .populate('shop'); // Adjust as needed
 
         res.status(200).json(bookings);
     } catch (error) {

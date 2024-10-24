@@ -37,12 +37,6 @@ const TodayBooking = () => {
                         </p>
                         <p className="tb-amount-paid">Amount Paid: ${booking.amountPaid}</p>
                         <p className="tb-status">Status: {booking.status}</p>
-                        {booking.feedback && (
-                            <div className="tb-feedback">
-                                <p className="tb-rating">Rating: {booking.feedback.rating}</p>
-                                <p className="tb-comment">Comment: {booking.feedback.comment}</p>
-                            </div>
-                        )}
                     </div>
                 ))}
             </div>
